@@ -1,0 +1,18 @@
+int x = 10 ;
+float y = 12.2 ;
+int valor = 13 ;
+
+if 3 = 8 then
+    print 8 = 8
+else
+    begin
+        if 3 = 3 then
+            begin
+                if 5 = 8 then
+                    print 2 = 2
+                else
+                    print 3 = 3
+            end
+        else
+            print 3 = 3
+    end
