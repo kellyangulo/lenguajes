@@ -2,17 +2,18 @@ int x = 10 ;
 float y = 12.2 ;
 int valor = 13 ;
 
-if 3 = 8 then
-    print 8 = 8
+if 1 = 2 then
+    print 2 = 3
 else
     begin
-        if 3 = 3 then
+        if 3 = 4 then
             begin
-                if 5 = 8 then
-                    print 2 = 2
+                if 4 = 5 then
+                    print 5 = 6
                 else
-                    print 3 = 3
+                    print 6 = 7
             end
         else
-            print 3 = 3
+            print 7 = 8
     end
+<eof>

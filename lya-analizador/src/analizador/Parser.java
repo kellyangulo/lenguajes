@@ -45,14 +45,13 @@ public class Parser {
         while(this.tok.getTipo() == Tipos.INT || this.tok.getTipo() == Tipos.FLOAT){
             dec.add(D()); // Se guardan las declaraciones :(
         }
-        while(this.tok.getTipo() == Tipos.IF || this.tok.getTipo() == Tipos.BEGIN || this.tok.getTipo() == Tipos.PRINT){
+        while(this.tok.getTipo() != Tipos.eof){
             stat.add(S()); // Se guardan los estatus xd
         }
+        eat(Tipos.eof);
         this.p = new Programa(dec,stat);
         return this.p;
-
     }
-
 
     public Dx D(){
         Dx d;
@@ -93,10 +92,13 @@ public class Parser {
     Ex e, e2;
     Sx s1, s2;
 
+
     public Sx S(){
         if (tokenActual == -1){
             return null;
         }
+        ArrayList<Sx> aux = new ArrayList<Sx>();
+        Sx s3;
 
         switch (this.tok.getTipo()){
             case IF:
@@ -109,9 +111,13 @@ public class Parser {
                 return new Ifx(e, s1, s2);
             case BEGIN:
                 eat(Tipos.BEGIN);
-                S();
+                while(this.tok.getTipo() == Tipos.IF || this.tok.getTipo() == Tipos.BEGIN || this.tok.getTipo() == Tipos.PRINT){
+                    s3 = S();
+                    stat.add(s3);
+                    aux.add(s3);
+                }
                 L();
-                return null;
+                return new Beginx(aux);
             case PRINT:
                 eat(Tipos.PRINT);
                 e2 = E();

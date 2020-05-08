@@ -33,7 +33,9 @@ public class Token {
         INT("^int$"),
         FLOAT("^float$"),
         num("^[+]?([0-9]+([.][0-9]*)?|[.][0-9])+$"), //Acepta números enteros y decimales
+        eof("^<eof>$"),
         id("^[a-zA-Z0-9]+$");
+
 
 
         public final String patron;
