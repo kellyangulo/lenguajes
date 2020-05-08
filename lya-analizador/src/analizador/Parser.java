@@ -89,8 +89,6 @@ public class Parser {
         return null;
     }
 
-    Ex e, e2;
-    Sx s1, s2;
 
 
     public Sx S(){
@@ -99,20 +97,24 @@ public class Parser {
         }
         ArrayList<Sx> aux = new ArrayList<Sx>();
         Sx s3;
+        Ex e, e2;
+        Sx s1, s2;
 
         switch (this.tok.getTipo()){
             case IF:
                 eat(Tipos.IF);
-                e = E();
+                e = E(); //e = 1 = 2 // 2da  e = 3 = 4 // 3era e = 4 = 5
                 eat(Tipos.THEN);
-                s1 = S();
+                s1 = S(); //print 2 = 3 // 2da print 5 = 6 //
                 eat(Tipos.ELSE);
-                s2 = S();
+                s2 = S(); //aqui tiene el begin // print 6 = 7
+                stat.add(s2);
+                stat.add(s1);
                 return new Ifx(e, s1, s2);
             case BEGIN:
                 eat(Tipos.BEGIN);
                 while(this.tok.getTipo() == Tipos.IF || this.tok.getTipo() == Tipos.BEGIN || this.tok.getTipo() == Tipos.PRINT){
-                    s3 = S();
+                    s3 = S(); //
                     stat.add(s3);
                     aux.add(s3);
                 }

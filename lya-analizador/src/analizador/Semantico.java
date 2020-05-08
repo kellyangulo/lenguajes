@@ -108,32 +108,50 @@ public class Semantico {
     }
 
     private void PrintIntermedio(int i, String signo, String id1, String e2) {
-        tabla.add(new Tabla(i, signo, id1, e2));
+        tabla.add(new Tabla(i, signo, id1, e2)); //signo: sub, jz, =, jp // = 0 x
     }
 
 
     private void Intermedio() {
         int indiceVerdadero = 1;
-        for(int i = 0; i < programa.d.size(); i++){
+        for(int i = 0; i < programa.d.size(); i++){ //Recorre declaraciones
             PrintIntermedio(indiceVerdadero, "=", programa.d.get(i).valor.num1, programa.d.get(i).id);
             indiceVerdadero++;
         }
-        for (int i = 0; i < programa.s.size(); i++) {
-            if (programa.s.get(i) instanceof Ifx) {
+        for (int i = programa.s.size()-1; i >= 0; i--) { //Recorre las sentencias
+            if (programa.s.get(i) instanceof Ifx) { //if
                 ifx = (Ifx) programa.s.get(i);
                 try {
                     if (ifx.e instanceof ComparaNum) {
                         comparaNum = (ComparaNum) ifx.e;
-                        PrintIntermedio(indiceVerdadero, "=", ((Numx) comparaNum.e1).num1, ((Numx) comparaNum.e2).num1);
+                        PrintIntermedio(indiceVerdadero, "SUB", ((Numx) comparaNum.e1).num1, ((Numx) comparaNum.e2).num1);
+                        indiceVerdadero++;
+                        PrintIntermedio(indiceVerdadero, "JZ", "("+ (indiceVerdadero-1) +")", "?");
                         indiceVerdadero++;
                     }
                     if (ifx.e instanceof ComparaId) {
                         comparaId = (ComparaId) ifx.e;
-                        PrintIntermedio(indiceVerdadero, "=", ((Idx) comparaNum.e1).id1, ((Idx) comparaNum.e2).id1);
+                        PrintIntermedio(indiceVerdadero, "SUB", ((Idx) comparaNum.e1).id1, ((Idx) comparaNum.e2).id1);
+                        indiceVerdadero++;
+                        PrintIntermedio(indiceVerdadero, "JZ", "("+ (indiceVerdadero-1) +")", "?");
                         indiceVerdadero++;
                     }
 
                 }catch(Exception e){
+
+                }
+            }
+            else if(programa.s.get(i) instanceof Printx){
+                print = (Printx) programa.s.get(i);
+                try{
+                    if(print.e instanceof ComparaNum){
+                        comparaNum = (ComparaNum) print.e;
+                    }
+                    if(print.e instanceof ComparaId){
+                        comparaId = (ComparaId) print.e;
+                    }
+
+                }catch (Exception e){
 
                 }
             }
