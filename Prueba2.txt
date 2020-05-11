@@ -1,6 +1,9 @@
-int x = 10 ;
+int x = 15 ;
 float y = 12.2 ;
 int valor = 13 ;
+
+
+
 
 if 1 = 2 then
     print 2 = 3
@@ -8,10 +11,11 @@ else
     begin
         if 3 = 4 then
             begin
-                if 4 = 5 then
-                    print 5 = 6
+                print x = a
+                if 10 = 11 then
+                    print 12 = 13
                 else
-                    print 6 = 7
+                    print 13 = 14
             end
         else
             print 7 = 8

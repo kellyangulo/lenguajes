@@ -11,9 +11,8 @@ public class Parser {
     int tokenActual;
     Token tok;
     boolean error;
-    public static int contandor = 0;
+    public int contandor = -1;
     Programa p;
-    public static int contadorSaveLineDo = 0;
 
     public Parser(ArrayList<Token> tokens){
         this.tokens = tokens;
@@ -99,7 +98,9 @@ public class Parser {
         Sx s3;
         Ex e, e2;
         Sx s1, s2;
-
+        //Array para el begin
+        ArrayList<Integer> sentenciasBegin = new ArrayList<>();
+        int temporal=0;
         switch (this.tok.getTipo()){
             case IF:
                 eat(Tipos.IF);
@@ -108,8 +109,17 @@ public class Parser {
                 s1 = S(); //print 2 = 3 // 2da print 5 = 6 //
                 eat(Tipos.ELSE);
                 s2 = S(); //aqui tiene el begin // print 6 = 7
-                stat.add(s2);
-                stat.add(s1);
+                stat.add(s2); //ELSE
+                stat.add(s1); //THEN
+                temporal = stat.size();
+                if(s1 instanceof Beginx){
+                    Beginx bx = (Beginx)s1;
+                    for(int j = 0 ; j< bx.sentences.size(); j++ ){
+                        PonerPrecedente(bx.sentences.get(j), temporal-1, j+1 );
+                    }
+                }
+                PonerPrecedente(s1, temporal, 1);
+                PonerPrecedente(s2, temporal, 2);
                 return new Ifx(e, s1, s2);
             case BEGIN:
                 eat(Tipos.BEGIN);
@@ -119,8 +129,13 @@ public class Parser {
                     aux.add(s3);
                 }
                 L();
+                temporal = stat.size();
+                for(int j = 0; j<aux.size(); j++){
+                    PonerPrecedente(aux.get(j), temporal, j);
+                }
                 return new Beginx(aux);
             case PRINT:
+                temporal = contandor;
                 eat(Tipos.PRINT);
                 e2 = E();
                 return new Printx(e2);
@@ -128,6 +143,19 @@ public class Parser {
                 error();
         }
         return  null;
+    }
+
+    private void PonerPrecedente(Sx sentencia, int PrecedenteIndex, int Orden){
+        if(sentencia instanceof Ifx){
+            ((Ifx) sentencia).ToLine = PrecedenteIndex;
+            ((Ifx) sentencia).order = Orden;
+        }else if(sentencia instanceof Printx){
+            ((Printx) sentencia).ToLine = PrecedenteIndex;
+            ((Printx) sentencia).order = Orden;
+        }else if(sentencia instanceof Beginx){
+            ((Beginx) sentencia).ToLine = PrecedenteIndex;
+            ((Beginx) sentencia).order = Orden;
+        }
     }
 
     public void L(){

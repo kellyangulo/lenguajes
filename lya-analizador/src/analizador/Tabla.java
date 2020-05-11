@@ -1,18 +1,22 @@
 package analizador;
 
+import arbol_sintactico.Sx;
+
 public class Tabla {
     int i;
     String signo;
     String id1;
     int e2;
     String e2s;
+    Sx referencia;
 
-    public Tabla(int i, String signo, String id1, String e2) {
+    public Tabla(int i, String signo, String id1, String e2, Sx referencia) {
 
         this.i = i;
         this.signo = signo;
         this.id1 = id1;
         this.e2s = e2;
+        this.referencia = referencia;
 
     }
     public int getI() {
